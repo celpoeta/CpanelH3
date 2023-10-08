@@ -108,7 +108,7 @@ class UserSeeder extends Seeder
             'phone_verified_at'             => Carbon::now()->toDateTimeString(),
             'avatar'                        => ('avatar/avatar.png'),
             'type'                          => 'Admin',
-            'lang'                          => 'en',
+            'lang'                          => 'es',
         ]);
 
         $user->assignRole($role->id);
