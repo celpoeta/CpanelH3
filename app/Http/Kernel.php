@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         'Setting' => \App\Http\Middleware\Setting::class,
         'verified_phone' => \App\Http\Middleware\EnsurePhoneIsVerified::class,
+        'apikey' => \App\Http\Middleware\VerifyAccessKey::class,
 
     ];
 
