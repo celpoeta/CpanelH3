@@ -2,154 +2,177 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Zoo;
-use Spatie\Permission\Models\Role;
+use App\DataTables\BlogDataTable;
 use App\DataTables\ZoosDataTable;
-use App\Facades\UtilityFacades;
-use App\Mail\RegisterMail;
-use App\Models\NotificationsSetting;
-use App\Models\Settings;
-use App\Models\SocialLogin;
-use App\Notifications\RegisterMail as NotificationsRegisterMail;
-use Carbon\Carbon;
-use DB;
-use Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Lab404\Impersonate\Impersonate;
-use Lab404\Impersonate\Services\ImpersonateManager;
-use Spatie\MailTemplates\Models\MailTemplate;
+use App\Models\Blog;
+use App\Models\Zoo;
 use App\Models\BlogCategory;
+use Illuminate\Http\Request;
 
 class ZooController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('permission:manage-user|create-user|edit-user|delete-user', ['only' => ['index', 'show']]);
-        $this->middleware('permission:create-user', ['only' => ['create', 'store']]);
-        $this->middleware('permission:edit-user', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete-user', ['only' => ['destroy']]);
-    }
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(ZoosDataTable $dataTable)
     {
-        return $dataTable->render('zoos.index');
-    }
-
-    public function create()
-    {
-        $category = BlogCategory::where('status', 1)->get();
-        $categories = [];
-        $categories[''] = "Seleccione una Categoria";
-        foreach ($category as $value) {
-            $categories[$value->id] = $value->name;
-        }
-        $view =  view('zoos.create', compact('categories'));
-        return ['html' => $view->render()];
-    }
-
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'common_name' => 'required',
-            'description' => 'required',
-            'url_image' => 'required',
-            'category_id' => 'required',
-            'habitat' => 'required',
-        ]);
-        $input = $request->all();
-        $input['risk'] = ($request->risk == 'on') ? 1 : 0;
-        $input['created_by'] = \Auth::user()->id;
-        Zoo::create($input);
-        // $zoo = Zoo::create([
-        //     'scientific_name' => $request->title,
-        //     'common_name' => $request->title,
-        //     'risk' => $request->risk,
-        //     'risk_description' => $request->risk_description,
-        //     'distribution' => $request->distribution,
-        //     'description' => $request->description,
-        //     'category_id' => $request->category_id,
-        //     'url_image' => $request->url_image,
-        //     'habitat' => $request->habitat,
-        //     'created_by' => \Auth::user()->id,
-        // ]);
-        return redirect()->route('zoos.index')
-            ->with('success',  __('Se ha creado el registro con exito.'));
-    }
-
-    public function edit($id)
-    {
-        $user = User::find($id);
-        $role = Role::all();
-        $roles = [];
-        $roles[''] = __('Select role');
-        foreach ($role as $value) {
-            $roles[$value->name] = $value->name;
-        }
-        $userRole = $user->roles->pluck('name', 'name')->all();
-        $view =   view('users.edit', compact('user', 'roles', 'userRole'));
-        return ['html' => $view->render()];
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required',
-            'phone' => 'required|unique:users,phone,' . $id,
-        ]);
-        $countries = \App\Core\Data::getCountriesList();
-        $country_code = $countries[$request->country_code]['phone_code'];
-        $input = $request->all();
-        if (!isset($input['password']) || $input['password'] != '') {
-            $input['password'] = Hash::make($input['password']);
-        } else {
-            unset($input['password']);
-        }
-        $input['country_code'] = $country_code;
-        $input['phone'] = $input['phone'];
-        $input['type'] = $input['roles'];
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-        $user->assignRole($request->input('roles'));
-        return redirect()->route('users.index')
-            ->with('success',  __('User updated successfully.'));
-    }
-
-
-    public function destroy($id)
-    {
-        if ($id != 1) {
-            $user = User::find($id);
-            $social_login = SocialLogin::where('user_id', $id)->get();
-            foreach ($social_login as $value) {
-                if ($user->type != 'Admin') {
-                    if ($value) {
-                        $value->delete();
-                    }
-                }
-            }
-            $user->delete();
-            return redirect()->back()->with('success', __('User deleted successfully.'));
+        if (\Auth::user()->can('manage-blog')) {
+            return $dataTable->render('zoos.index');
         } else {
             return redirect()->back()->with('failed', __('Permission denied.'));
         }
     }
 
-    public function zooStatus(Request $request, $id)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $zoos = Zoo::find($id);
-        $input = ($request->value == "true") ? 1 : 0;
-        if ($zoos) {
-            $zoos->status = '0';
-            var_dump($zoos->status);
-            $zoos->save();
+        if (\Auth::user()->can('create-blog')) {
+            $categories = BlogCategory::where('status', 1)->pluck('name', 'id');
+            // dd($categories);
+            return view('zoos.create', compact('categories'));
+        } else {
+            return redirect()->back()->with('failed', __('Permission denied.'));
         }
-        return response()->json(['is_success' => true, 'message' => __('User status changed successfully.')]);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if (\Auth::user()->can('create-blog')) {
+            $this->validate($request, [
+                'common_name' => 'required',
+                'description' => 'required',
+                'url_image' => 'required',
+                'category_id' => 'required',
+                'habitat' => 'required',
+            ]);
+            if ($request->hasFile('url_image')) {
+                $request->validate([
+                    'url_image' => 'required',
+                ]);
+                $path = $request->file('url_image')->store('zoos');
+            }
+            $input = $request->all();
+            $input['risk'] = ($request->risk == 'on') ? 1 : 0;
+            $input['url_image'] = $path;
+            $input['created_by'] = \Auth::user()->id;
+            $zoos = Zoo::create($input);
+            return redirect()->route('zoos.index')->with('success', __('Zoo created successfully.'));
+        } else {
+            return redirect()->back()->with('failed', __('Permission denied.'));
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Blog $blog)
+    {
+        if (\Auth::user()->can('edit-blog')) {
+            $categories = BlogCategory::where('status', 1)->pluck('name', 'id');
+            return view('blog.edit', compact('blog', 'categories'));
+        } else {
+            return redirect()->back()->with('failed', __('Permission denied.'));
+        }
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        if (\Auth::user()->can('edit-blog')) {
+            request()->validate([
+                'title' => 'required',
+                'description' => 'required',
+                'category_id' => 'required',
+            ]);
+            $blog = Blog::find($id);
+            if ($request->hasFile('images')) {
+                $request->validate([
+                    'images' => 'required',
+                ]);
+                $path = $request->file('images')->store('blogs');
+                $blog->images = $path;
+            }
+            $blog->title = $request->title;
+            $blog->description = $request->description;
+            $blog->category_id = $request->category_id;
+            $blog->short_description = $request->short_description;
+            $blog->created_by = \Auth::user()->id;
+            $blog->save();
+            return redirect()->route('blogs.index')->with('success', __('blogs updated successfully.'));
+        } else {
+            return redirect()->back()->with('failed', __('Permission denied.'));
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Blog  $blog
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        if (\Auth::user()->can('delete-blog')) {
+            $post = Blog::find($id);
+            $post->delete();
+            return redirect()->route('blogs.index')->with('success', __('Posts deleted successfully.'));
+        } else {
+            return redirect()->back()->with('failed', __('Permission denied.'));
+        }
+    }
+
+    public function view_blog($slug , $lang = 'en')
+    {
+        \App::setLocale($lang);
+        $blog =  Blog::where('slug', $slug)->first();
+        $all_blogs =  Blog::all();
+        return view('blog.view_blog', compact('blog' ,'all_blogs' ,'slug', 'lang'));
+    }
+
+    public function see_all_blogs(Request $request , $lang = 'en')
+    {
+        \App::setLocale($lang);
+        if($request->category_id != ''){
+            $all_blogs = Blog::where('category_id' , $request->category_id)->paginate(3);
+            return response()->json(['all_blogs' => $all_blogs]);
+        }
+        else{
+            $all_blogs = Blog::paginate(3);
+        }
+        $recent_blogs = Blog::latest()->take(3)->get();
+        $last_blog = Blog::latest()->first();
+        $categories = BlogCategory::all();
+        return view('blog.view_all_blogs' , compact('all_blogs' , 'recent_blogs' , 'last_blog' , 'categories' , 'lang'));
     }
 }
+

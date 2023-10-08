@@ -100,7 +100,7 @@
                             <span class="dash-micon">
                                 <i class="ti ti-forms"></i>
                             </span>
-                            <span class="dash-mtext">{{ 'Blog' }}</span>
+                            <span class="dash-mtext">{{ __('Blog') }}</span>
                             <span class="dash-arrow"><i data-feather="chevron-right"></i>
                             </span>
                         </a>
