@@ -34,7 +34,7 @@ class ZoosDataTable extends DataTable
                 return $created_at;
             })
             ->addColumn('action', function (Zoo $blog) {
-                return view('blog.action', compact('blog'));
+                return view('zoos.action', compact('blog'));
             })
             ->editColumn("images", function (Zoo $blog) {
                 if ($blog->url_image) {
@@ -201,6 +201,6 @@ class ZoosDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Blog_' . date('YmdHis');
+        return 'Zoos_' . date('YmdHis');
     }
 }

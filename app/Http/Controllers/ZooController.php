@@ -76,23 +76,16 @@ class ZooController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Blog  $blog
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Blog  $blog
      * @return \Illuminate\Http\Response
      */
-    public function edit(Blog $blog)
+    public function edit($id)
     {
         if (\Auth::user()->can('edit-blog')) {
             $categories = BlogCategory::where('status', 1)->pluck('name', 'id');
-            return view('blog.edit', compact('blog', 'categories'));
+            $blog = Zoo::find($id);
+            return view('zoos.edit', compact('blog', 'categories'));
         } else {
             return redirect()->back()->with('failed', __('Permission denied.'));
         }
@@ -103,32 +96,32 @@ class ZooController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\Zoo  $blog
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         if (\Auth::user()->can('edit-blog')) {
-            request()->validate([
-                'title' => 'required',
+            $this->validate($request, [
+                'common_name' => 'required',
                 'description' => 'required',
+                'url_image' => 'required',
                 'category_id' => 'required',
+                'habitat' => 'required',
             ]);
             $blog = Blog::find($id);
-            if ($request->hasFile('images')) {
+            if ($request->hasFile('url_image')) {
                 $request->validate([
-                    'images' => 'required',
+                    'url_image' => 'required',
                 ]);
-                $path = $request->file('images')->store('blogs');
-                $blog->images = $path;
+                $path = $request->file('url_image')->store('zoos');
             }
-            $blog->title = $request->title;
-            $blog->description = $request->description;
-            $blog->category_id = $request->category_id;
-            $blog->short_description = $request->short_description;
-            $blog->created_by = \Auth::user()->id;
-            $blog->save();
-            return redirect()->route('blogs.index')->with('success', __('blogs updated successfully.'));
+            $input = $request->all();
+            $input['risk'] = ($request->risk == 'on') ? 1 : 0;
+            $input['url_image'] = $path;
+            $input['created_by'] = \Auth::user()->id;
+            $zoos = Zoo::create($input);
+            return redirect()->route('zoos.index')->with('success', __('Zoo Update successfully.'));
         } else {
             return redirect()->back()->with('failed', __('Permission denied.'));
         }
@@ -137,15 +130,15 @@ class ZooController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Blog  $blog
+     * @param  \App\Models\Zoo  $blog
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         if (\Auth::user()->can('delete-blog')) {
-            $post = Blog::find($id);
+            $post = Zoo::find($id);
             $post->delete();
-            return redirect()->route('blogs.index')->with('success', __('Posts deleted successfully.'));
+            return redirect()->route('zoos.index')->with('success', __('Posts deleted successfully.'));
         } else {
             return redirect()->back()->with('failed', __('Permission denied.'));
         }

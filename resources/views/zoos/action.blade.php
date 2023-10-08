@@ -1,5 +1,5 @@
 @can('edit-blog')
-    <a class="btn btn-sm small btn btn-warning" href="blogs/{{ $blog->id }}/edit" data-bs-toggle="tooltip"
+    <a class="btn btn-sm small btn btn-warning" href="zoos/{{ $blog->id }}/edit" data-bs-toggle="tooltip"
         data-bs-placement="bottom" data-bs-original-title="{{ __('Edit') }}"><i class="ti ti-edit text-white"></i>
     </a>
 @endcan
@@ -7,7 +7,7 @@
     {!! Form::open([
         'method' => 'DELETE',
         'class' => 'd-inline',
-        'route' => ['blogs.destroy', $blog->id],
+        'route' => ['zoos.destroy', $blog->id],
         'id' => 'delete-form-' . $blog->id,
     ]) !!}
     <a href="#" class="btn btn-sm small btn btn-danger show_confirm" data-bs-toggle="tooltip" data-bs-placement="bottom"
