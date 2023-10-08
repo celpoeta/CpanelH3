@@ -49,10 +49,20 @@ class BlogCategoryController extends Controller
         if (Auth::user()->can('create-category')) {
             request()->validate([
                 'name' => 'required',
+                'icon' => 'required',
                 'status' => 'required',
             ]);
+
+            if ($request->hasFile('icon')) {
+                $request->validate([
+                    'icon' => 'required',
+                ]);
+                $path = $request->file('icon')->store('categories');
+            }
+
             BlogCategory::create([
                 'name' => $request->name,
+                'icon' => $path,
                 'status' => $request->status
             ]);
             return redirect()->route('blogcategory.index')->with('success', __('Category created successfully.'));
@@ -100,9 +110,19 @@ class BlogCategoryController extends Controller
         if (Auth::user()->can('edit-category')) {
             request()->validate([
                 'name' => 'required',
+                'icon' => 'required',
                 'status' => 'required',
             ]);
+
             $category = BlogCategory::find($id);
+
+            if ($request->hasFile('icon')) {
+                $request->validate([
+                    'icon' => 'required',
+                ]);
+                $path = $request->file('icon')->store('categories');
+                $category->icon = $path;
+            }
             $category->name = $request->name;
             $category->status = $request->status;
             $category->update();

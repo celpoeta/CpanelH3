@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use Lab404\Impersonate\Impersonate;
 use Lab404\Impersonate\Services\ImpersonateManager;
 use Spatie\MailTemplates\Models\MailTemplate;
+use Illuminate\Support\Facades\Storage;
 
 class APIController extends Controller
 {
@@ -39,13 +40,44 @@ class APIController extends Controller
 
 
     public function allNews() {
-        $Blog = Blog::all();
-        return response()->json($Blog);
+        $coordenadas = Blog::get(['id', 'title', 'images', 'short_description', 'description','category_id','slug','created_at']);
+        $BlogArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $BlogArray[] = [
+                'id' => $coordenada->id,
+                'title' => $coordenada->title,
+                'images' => Storage::url($coordenada->images),
+                'description' => $coordenada->description,
+                'category_id' => $coordenada->category_id,
+                'slug' => $coordenada->slug,
+                'created_at' => $coordenada->created_at
+            ];
+        }
+
+        return response()->json($BlogArray);
     }
 
     public function allZoos() {
         $Zoo = Zoo::all()->where('status', 1);;
         return response()->json($Zoo);
+    }
+
+    public function Map() {
+        $coordenadas  = Zoo::where('status', 1)->get(['id', 'icon', 'common_name', 'latitud', 'longitud']);
+
+        $coordenadasArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $coordenadasArray[] = [
+                'id' => $coordenada->id,
+                'icon' => Storage::url($coordenada->icon),
+                'name' => $coordenada->common_name,
+                'location' => $coordenada->latitud.', '.$coordenada->longitud
+            ];
+        }
+
+        return response()->json($coordenadasArray);
     }
 
     public function ShowZoo($id) {
