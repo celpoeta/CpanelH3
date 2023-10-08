@@ -36,8 +36,8 @@
                 {!! Form::text('url_image', null, ['class' => 'form-control', 'required', 'placeholder' => __('Enter name')]) !!}
             </div>
             <div class="form-group  ">
-                {{ Form::label('name', __('category'), ['class' => 'col-form-label']) }}
-                {!! Form::text('category_id', null, ['class' => 'form-control', 'required', 'placeholder' => __('Enter name')]) !!}
+                {{ Form::label('category_id', __('category'), ['class' => 'col-form-label']) }}
+                {!! Form::select('category_id', $categories, null, ['class' => 'form-select', 'id' => 'category_id']) !!}
             </div>
             <div class="form-group  ">
                 {{ Form::label('name','Habitat', ['class' => 'col-form-label']) }}

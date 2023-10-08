@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Lab404\Impersonate\Impersonate;
 use Lab404\Impersonate\Services\ImpersonateManager;
 use Spatie\MailTemplates\Models\MailTemplate;
+use App\Models\BlogCategory;
 
 class ZooController extends Controller
 {
@@ -39,7 +40,13 @@ class ZooController extends Controller
 
     public function create()
     {
-        $view =  view('zoos.create');
+        $category = BlogCategory::where('status', 1)->get();
+        $categories = [];
+        $categories[''] = "Seleccione una Categoria";
+        foreach ($category as $value) {
+            $categories[$value->id] = $value->name;
+        }
+        $view =  view('zoos.create', compact('categories'));
         return ['html' => $view->render()];
     }
 
