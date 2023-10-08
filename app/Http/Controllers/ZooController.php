@@ -60,6 +60,7 @@ class ZooController extends Controller
             'habitat' => 'required',
         ]);
         $input = $request->all();
+        $input['risk'] = ($request->risk == 'on') ? 1 : 0;
         $input['created_by'] = \Auth::user()->id;
         Zoo::create($input);
         // $zoo = Zoo::create([

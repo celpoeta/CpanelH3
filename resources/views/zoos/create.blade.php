@@ -22,7 +22,12 @@
             </div>
             <div class="form-group  ">
                 {{ Form::label('name', 'En extinción', ['class' => 'col-form-label']) }}
-                {!! Form::text('risk', null, ['class' => 'form-control', 'required', 'placeholder' => __('Enter name')]) !!}
+                <div class="col-md-2 form-check form-switch custom-switch-v1">
+                    <label class="custom-switch mt-2 float-right">
+                        <input name="risk" data-onstyle="primary" class="form-check-input input-primary" type="checkbox"/>
+                    </label>
+                </div>
+
             </div>
             <div class="form-group  ">
                 {{ Form::label('name', 'nota', ['class' => 'col-form-label']) }}
