@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ZooController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BookingValueController;
 use App\Http\Controllers\CoingateController;
@@ -78,6 +79,7 @@ Route::group(['middleware' => ['auth', 'xss', 'Setting', 'verified', '2fa', 'ver
     Route::resource('forms', FormController::class)->except(['show']);
 
     Route::resource('blogs', BlogController::class)->except(['show']);
+    Route::resource('zoos', ZooController::class)->except(['show']);
     Route::resource('blogcategory', BlogCategoryController::class);
     Route::post('blogcategory-status/{id}', [BlogCategoryController::class, 'blogcategorystatus'])->name('blogcategory.status');
 
@@ -159,6 +161,10 @@ Route::group(['middleware' => ['auth', 'xss', 'Setting', 'verified', '2fa', 'ver
     // user stauts & grid
     Route::post('/user/status/{id}', [UserController::class, 'userStatus'])->name('users.status');
     Route::get('/users/grid/{id?}', [UserController::class, 'grid_view'])->name('grid.view');
+
+    // zoo stauts & grid
+    Route::post('/zoos/status/{id}', [ZooController::class, 'zooStatus'])->name('zoos.status');
+
 
     //profile update
     Route::post('update-profile-login/{id}', [ProfileController::class, 'updateLogin'])->name('update-login');
@@ -331,7 +337,6 @@ Route::get('all/faqs/{lang?}', [FrontController::class, 'faqs'])->name('faqs.pag
  Route::get('/blogs/{slug}/{lang?}', [BlogController::class, 'view_blog'])->name('view.blog');
  Route::get('/see/blogs/{lang?}', [BlogController::class, 'see_all_blogs'])->name('see.all.blogs');
  Route::post('/search/blogs', [BlogController::class, 'search_blogs'])->name('search.blogs');
-
 
 // sms verify
 Route::group(['middleware' => ['Setting', 'xss']], function () {

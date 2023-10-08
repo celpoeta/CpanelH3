@@ -3,14 +3,15 @@
 namespace App\DataTables;
 
 use App\Facades\UtilityFacades;
-use App\Models\User;
+use App\Models\Zoo;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Storage;
 
-class UsersDataTable extends DataTable
+class ZoosDataTable extends DataTable
 {
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
@@ -20,49 +21,49 @@ class UsersDataTable extends DataTable
             ->editColumn('created_at', function ($request) {
                 return UtilityFacades::date_time_format($request->created_at);
             })
-            ->editColumn('active_status', function (User $user) {
-                if ($user->active_status == 1) {
+             ->editColumn('status', function (Zoo $zoo) {
+                if ($zoo->status == 1) {
                     return '<div class="form-check form-switch">
-                                            <input class="form-check-input chnageStatus" checked type="checkbox" role="switch" id="' . $user->id . '" data-url="' . route('users.status', $user->id) . '">
+                                            <input class="form-check-input chnageStatus" checked type="checkbox" role="switch" id="' . $zoo->id . '" data-url="' . route('zoos.status', $zoo->id) . '">
                                         </div>';
                 } else {
                     return '<div class="form-check form-switch">
-                                             <input class="form-check-input chnageStatus" type="checkbox" role="switch" id="' . $user->id . '" data-url="' . route('users.status', $user->id) . '">
+                                             <input class="form-check-input chnageStatus" type="checkbox" role="switch" id="' . $zoo->id . '" data-url="' . route('zoos.status', $zoo->id) . '">
                                         </div>';
                 }
             })
-            ->addColumn('role', function (User $user) {
-                $out = '';
-                $out = '<span class="p-2 px-3 badge rounded-pill bg-primary">' . $user->type . '</span>';
-                return $out;
-            })
-            ->addColumn('email_verified_at', function (User $user) {
-                if ($user->email_verified_at) {
-                    $out = '<span class="p-2 px-3 badge rounded-pill bg-info">' . __('Verified') . '</span>';
-                    return $out;
+            ->editColumn("images", function (Zoo $blog) {
+                if ($blog->url_image) {
+                    $return = "<img src='" . $blog->url_image . "' width='100' />";
                 } else {
-                    $out = '<span class="p-2 px-3 badge rounded-pill bg-warning">' . __('Unverified') . '</span>';
-                    return $out;
+                    $return = "<img src='" . Storage::url('test-image/350x250.png') . "' width='50' />";
                 }
+                return $return;
             })
-            ->addColumn('phone_verified_at', function (User $user) {
-                if ($user->phone_verified_at) {
-                    $out = '<span class="p-2 px-3 badge rounded-pill bg-info">' . __('Verified') . '</span>';
-                    return $out;
-                } else {
-                    $out = '<span class="p-2 px-3 badge rounded-pill bg-warning">' . __('Unverified') . '</span>';
-                    return $out;
-                }
+            // ->addColumn('role', function (User $user) {
+            //     $out = '';
+            //     $out = '<span class="p-2 px-3 badge rounded-pill bg-primary">' . $user->type . '</span>';
+            //     return $out;
+            // })
+            // ->addColumn('email_verified_at', function (User $user) {
+            //     if ($user->email_verified_at) {
+            //         $out = '<span class="p-2 px-3 badge rounded-pill bg-info">' . __('Verified') . '</span>';
+            //         return $out;
+            //     } else {
+            //         $out = '<span class="p-2 px-3 badge rounded-pill bg-warning">' . __('Unverified') . '</span>';
+            //         return $out;
+            //     }
+            //})
+            ->addColumn('action', function (Zoo $user) {
+                return view('zoos.action', compact('user'));
             })
-            ->addColumn('action', function (User $user) {
-                return view('users.action', compact('user'));
-            })
-            ->rawColumns(['role', 'email_verified_at', 'action', 'active_status', 'phone_verified_at']);
+            ->rawColumns(['status','images','action']);
     }
 
-    public function query(User $model): QueryBuilder
+    public function query(Zoo $model): QueryBuilder
     {
-        return $model->newQuery()->where('type', '!=', 'Admin')->orderBy('id', 'ASC');
+        return $model->newQuery()->join('blog_categories','category_id', '=', 'blog_categories.id')
+        ->select('zoos.*', 'blog_categories.name as category_name')->orderBy('id', 'ASC');
     }
 
     public function html(): HtmlBuilder
@@ -98,7 +99,7 @@ class UsersDataTable extends DataTable
     if ($canCreatePoll) {
         $buttonsConfig[] = [
             'extend' => 'create',
-            'className' => 'btn btn-light-primary no-corner me-1 add_user',
+            'className' => 'btn btn-light-primary no-corner me-1 add_zoo',
             'action' => " function (e, dt, node, config) { }",
         ];
     }
@@ -173,12 +174,12 @@ class UsersDataTable extends DataTable
     {
         return [
             Column::make('id')->title(__('No'))->data('DT_RowIndex')->name('DT_RowIndex')->searchable(false)->orderable(false),
-            Column::make('name')->title(__('Name')),
-            Column::make('email')->title(__('Email')),
-            Column::make('role')->title(__('Role')),
-            Column::make('active_status')->title(__('Status')),
-            Column::make('email_verified_at')->title(__('Email Verified At')),
-            Column::make('phone_verified_at')->title(__('Phone Verified At')),
+            Column::make('scientific_name')->title("Nombre cientifico"),
+            Column::make('common_name')->title(__('Nombre comun')),
+            Column::make('images')->title(__('IMAGEN')),
+            Column::make('risk')->title('en extinción'),
+            Column::make('category_name')->title(__('Category')),
+            Column::make('status')->title(__('Status')),
             Column::make('created_at')->title(__('Created At')),
             Column::computed('action')->title(__('Action'))
                 ->exportable(false)
@@ -190,6 +191,7 @@ class UsersDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Users_' . date('YmdHis');
+        return 'Zoos_' . date('YmdHis');
     }
 }
+

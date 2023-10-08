@@ -5968,7 +5968,7 @@ textarea.is-invalid.dataTable-input {
 
 .modal {
     --bs-modal-zindex: 1055;
-    --bs-modal-width: 500px;
+    --bs-modal-width: 1020px;
     --bs-modal-padding: 1.25rem;
     --bs-modal-margin: 0.5rem;
     --bs-modal-color: ;
