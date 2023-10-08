@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\UtilityFacades;
+use Carbon\Carbon;
 use App\Models\SocialLogin;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class SocialLoginController extends Controller
             $existuser->social_type = $type;
             $existuser->save();
             Auth::login($existuser);
-            return redirect()->intended('home');
+            return redirect()->intended('http://localhost:8100/welcome?id='.$finduser->user_id);
         } else {
             $checkuser =  User::where('email', $user->email)->first();
             if (!$checkuser) {
@@ -41,11 +42,15 @@ class SocialLoginController extends Controller
                     'email' => $user->email,
                     'password' => Hash::make('123456dummy'),
                     'type' => UtilityFacades::getsettings('roles'),
-                    'lang' => 'es',
+                    'lang' => 'en',
                     'created_by' => '1',
                     'plan_id' => '1',
                     'avatar' => $avatar,
                     'social_type' => $type,
+                    'theme_color' => 'theme-6',
+                    'active_status'                 => '1',
+                    'email_verified_at'             => Carbon::now()->toDateTimeString(),
+                    'phone_verified_at'             => Carbon::now()->toDateTimeString(),
                 ]);
                 $newUser->assignRole(UtilityFacades::getsettings('roles'));
                 $social_type = SocialLogin::create([
@@ -66,7 +71,7 @@ class SocialLoginController extends Controller
                 $checkuser->save();
                 Auth::login($checkuser);
             }
-            return redirect()->intended('home');
+            return redirect()->intended('http://localhost:8100/welcome?id='.$user->id);
         }
     }
 }

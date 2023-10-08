@@ -34,8 +34,18 @@ class APIController extends Controller
 {
 
     public function allCategories() {
-        $BlogCategory = BlogCategory::all()->where('status', 1);
-        return response()->json($BlogCategory);
+        $coordenadas = BlogCategory::where('status', 1)->get(['id', 'name', 'icon', 'status', 'created_at']);
+        $Categories = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $Categories[] = [
+                'id' => $coordenada->id,
+                'name' => $coordenada->name,
+                'icon' => Storage::url($coordenada->icon),
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
+            ];
+        }
+        return response()->json($Categories);
     }
 
 
@@ -51,7 +61,7 @@ class APIController extends Controller
                 'description' => $coordenada->description,
                 'category_id' => $coordenada->category_id,
                 'slug' => $coordenada->slug,
-                'created_at' => $coordenada->created_at
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
             ];
         }
 
@@ -184,9 +194,23 @@ class APIController extends Controller
     public function profileUser($id)
     {
         $user = User::find($id);
-        return response()->json([
-            "Profile" => $user
-           ]);
+
+        $coordenadas = User::where('id', $id)->get(['id', 'name', 'email', 'avatar', 'country', 'phone','created_at']);
+        $profile = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $profile[] = [
+                'id' => $coordenada->id,
+                'name' => $coordenada->name,
+                'email' => $coordenada->email,
+                'avatar' => Storage::url($coordenada->avatar),
+                'country' => $coordenada->country,
+                'phone' => $coordenada->phone,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
+            ];
+        }
+        return response()->json($profile);
+
 
     }
 

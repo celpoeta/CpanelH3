@@ -1,3 +1,235 @@
+body.theme-6 {
+    background: linear-gradient(141.55deg, rgba(240, 244, 243, 0) 3.46%, #f0f4f3 99.86%);
+}
+
+body.theme-6 .bg-primary {
+    background: linear-gradient(141.55deg, #008ECC 3.46%, #008ECC 99.86%), #008ECC !important;
+}
+
+body.theme-6 .dash-header .drp-language .drp-text,
+  body.theme-6 .dash-header .dash-head-link > i:not(.nocolor) {
+    color: #008ECC;
+}
+
+body.theme-6 .dash-header .drp-company .theme-avtar {
+    background: #cce8f5;
+    color: #008ECC;
+}
+
+body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item.active > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:active > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:focus > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:hover > .dash-link,
+  body.theme-6 .dash-sidebar .dash-navbar > .dash-item.active > .dash-link,
+  body.theme-6 .dash-sidebar .dash-navbar > .dash-item:active > .dash-link,
+  body.theme-6 .dash-sidebar .dash-navbar > .dash-item:focus > .dash-link,
+  body.theme-6 .dash-sidebar .dash-navbar > .dash-item:hover > .dash-link {
+    background: linear-gradient(141.55deg, #008ECC 3.46%, #008ECC 99.86%), #008ECC;
+    color: #fff;
+    box-shadow: 0 5px 7px -1px rgba(0, 142, 204, 0.3);
+}
+
+body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item.active > .dash-link i, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:active > .dash-link i, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:focus > .dash-link i, body.theme-6 .dash-sidebar.light-sidebar .dash-navbar > .dash-item:hover > .dash-link i,
+    body.theme-6 .dash-sidebar .dash-navbar > .dash-item.active > .dash-link i,
+    body.theme-6 .dash-sidebar .dash-navbar > .dash-item:active > .dash-link i,
+    body.theme-6 .dash-sidebar .dash-navbar > .dash-item:focus > .dash-link i,
+    body.theme-6 .dash-sidebar .dash-navbar > .dash-item:hover > .dash-link i {
+    color: #008ECC;
+}
+
+body.theme-6 .dash-sidebar.light-sidebar .dash-item .dash-submenu .dash-item::before,
+  body.theme-6 .dash-sidebar .dash-item .dash-submenu .dash-item::before {
+    border-right-color: #008ECC;
+}
+
+body.theme-6 .dash-sidebar.light-sidebar .dash-item .dash-submenu .dash-item.active > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-item .dash-submenu .dash-item:active > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-item .dash-submenu .dash-item:focus > .dash-link, body.theme-6 .dash-sidebar.light-sidebar .dash-item .dash-submenu .dash-item:hover > .dash-link,
+  body.theme-6 .dash-sidebar .dash-item .dash-submenu .dash-item.active > .dash-link,
+  body.theme-6 .dash-sidebar .dash-item .dash-submenu .dash-item:active > .dash-link,
+  body.theme-6 .dash-sidebar .dash-item .dash-submenu .dash-item:focus > .dash-link,
+  body.theme-6 .dash-sidebar .dash-item .dash-submenu .dash-item:hover > .dash-link {
+    color: #008ECC;
+}
+
+body.theme-6 a:not([class]) {
+    color: #008ECC;
+}
+
+body.theme-6 a:not([class]):hover {
+    color: #008ECC;
+}
+
+body.theme-6 .text-primary {
+    color: #008ECC !important;
+}
+
+body.theme-6 .list-group-item.active {
+    background: linear-gradient(141.55deg, #008ECC 3.46%, #008ECC 99.86%), #008ECC !important;
+}
+
+body.theme-6 .progress-bar:not([class*="bg-"]),
+  body.theme-6 .btn-primary {
+    --bs-btn-color: #ffffff;
+    --bs-btn-bg: #008ECC;
+    --bs-btn-border-color: #008ECC;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: #0079ad;
+    --bs-btn-hover-border-color: #0072a3;
+    --bs-btn-focus-shadow-rgb: 38, 159, 212;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #0072a3;
+    --bs-btn-active-border-color: #006b99;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #ffffff;
+    --bs-btn-disabled-bg: #008ECC;
+    --bs-btn-disabled-border-color: #008ECC;
+}
+
+body.theme-6 .btn-outline-primary {
+    --bs-btn-color: #008ECC;
+    --bs-btn-border-color: #008ECC;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-hover-bg: #008ECC;
+    --bs-btn-hover-border-color: #008ECC;
+    --bs-btn-focus-shadow-rgb: 0, 142, 204;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #008ECC;
+    --bs-btn-active-border-color: #008ECC;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #008ECC;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #008ECC;
+    --bs-gradient: none;
+}
+
+body.theme-6 .btn-light-primary {
+    background: #cce8f5;
+    color: #008ECC;
+    border-color: #cce8f5;
+}
+
+body.theme-6 .btn-light-primary:hover {
+    background: #008ECC;
+    color: #fff;
+    border-color: #008ECC;
+}
+
+body.theme-6 .btn-light-primary.focus, body.theme-6 .btn-light-primary:focus {
+    background: #008ECC;
+    color: #fff;
+    border-color: #008ECC;
+}
+
+body.theme-6 .btn-light-primary:not(:disabled):not(.disabled).active, body.theme-6 .btn-light-primary:not(:disabled):not(.disabled):active,
+    .show > body.theme-6 .btn-light-primary.dropdown-toggle {
+    background: #008ECC;
+    color: #fff;
+    border-color: #008ECC;
+}
+
+body.theme-6 .btn-check:active + .btn-light-primary,
+  body.theme-6 .btn-check:checked + .btn-light-primary {
+    background: #008ECC;
+    color: #fff;
+    border-color: #008ECC;
+}
+
+body.theme-6 .alert-primary {
+    --bs-alert-color: #00557a;
+    --bs-alert-bg: #cce8f5;
+    --bs-alert-border-color: #b3ddf0;
+}
+
+body.theme-6 .alert-primary .alert-link {
+    color: #004462;
+}
+
+body.theme-6 .badge.bg-light-primary {
+    background: #cce8f5;
+    color: #008ECC;
+    border-color: #cce8f5;
+}
+
+body.theme-6 .page-item.active .page-link {
+    background: #008ECC;
+    border-color: #008ECC;
+}
+
+body.theme-6 .nav-link {
+    color: #008ECC;
+}
+
+body.theme-6 .nav-link:hover, body.theme-6 .nav-link:focus {
+    color: #008ECC;
+}
+
+body.theme-6 .nav-tabs .nav-link {
+    background: none;
+}
+
+body.theme-6 .nav-pills .nav-link {
+    background: none;
+}
+
+body.theme-6 .nav-pills .nav-link:focus,
+  body.theme-6 .nav-pills .nav-link.active,
+  body.theme-6 .nav-pills .show > .nav-link {
+    color: #ffffff;
+    background: linear-gradient(141.55deg, #008ECC 3.46%, #008ECC 99.86%), #008ECC;
+}
+
+body.theme-6 .form-check-input:focus,
+  body.theme-6 .form-select:focus,
+  body.theme-6 .form-control:focus,
+  body.theme-6 .custom-select:focus,
+  body.theme-6 .dataTable-selector:focus,
+  body.theme-6 .dataTable-input:focus {
+    border-color: #008ECC;
+    box-shadow: 0 0 0 0.2rem rgba(0, 142, 204, 0.25);
+}
+
+body.theme-6 .form-check-input:checked {
+    background-color: #008ECC;
+    border-color: #008ECC;
+}
+
+body.theme-6 .form-range::-webkit-slider-thumb {
+    background: #008ECC;
+}
+
+body.theme-6 .form-range::-webkit-slider-thumb:active {
+    background: #008ECC;
+}
+
+body.theme-6 .form-range::-moz-range-thumb {
+    background: #008ECC;
+}
+
+body.theme-6 .form-range::-moz-range-thumb:active {
+    background: #008ECC;
+}
+
+body.theme-6 .form-check-input:checked {
+    background-color: #008ECC;
+    border-color: #008ECC;
+}
+
+body.theme-6 .form-check-input[type="checkbox"]:indeterminate {
+    background-color: #008ECC;
+    border-color: #008ECC;
+}
+
+body.theme-6 .form-check .form-check-input.input-primary:checked {
+    background-color: #008ECC;
+    border-color: #008ECC;
+}
+
+body.theme-6 pre[class*="language-"] > code {
+    border-left-color: #008ECC;
+    background-image: linear-gradient(transparent 50%, rgba(0, 142, 204, 0.04) 50%);
+}
+
+body.theme-6 .card .card-header h5:after, body.theme-6 .card .card-header .h5:after,
+  body.theme-6 .card .card-header .h5:after {
+    background: #008ECC;
+}
+
 .fa,
 .fas {
     font-family: 'Font Awesome 5 Free';

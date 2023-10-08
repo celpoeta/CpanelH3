@@ -60,8 +60,8 @@
                                 {!! NoCaptcha::display() !!}
                             </div>
                         @endif
-                        <div class="d-grid">
-                            {!! Form::button(__('Sign In'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block mt-3']) !!}
+                        <div class="d-grid" >
+                            {!! Form::button(__('Sign In'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block mt-3', 'style' => 'background-color:#008ECC' ]) !!}
                         </div>
                         {{ Form::close() }}
                         <div class="register-option">
@@ -115,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="login-media-col">
+                <div class="login-media-col" style="background-color:#008ECC;">
                     <div class="login-media-inner">
                         <img src="{{ Utility::getsettings('login_image')
                             ? Storage::url(Utility::getsettings('login_image'))

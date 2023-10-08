@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/landing-page2/css/landingpage2-responsive.css') }}">
 </head>
 
-<body>
+<body class="theme-6">
     <!-- [ auth-signup ] start -->
     <div class="auth-wrapper auth-v3">
         <!--header start here-->
@@ -41,9 +41,6 @@
     </div>
     <!-- [ auth-signup ] end -->
     </div>
-    <!--footer start here-->
-    @include('layouts.app_footer')
-    <!--footer end here-->
 
 </body>
 <!--scripts start here-->
