@@ -12,6 +12,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Storage;
 
 class BlogCategoryDataTable extends DataTable
 {
@@ -29,6 +30,18 @@ class BlogCategoryDataTable extends DataTable
             ->addColumn('action', function (BlogCategory $category) {
                 return view('blogcategory.action', compact('category'));
             })
+            ->editColumn("icon", function (BlogCategory $category) {
+                if ($category->icon) {
+                    if (Storage::exists($category->icon)) {
+                        $return = "<img src='" . Storage::url($category->icon) . "' width='50' />";
+                    } else {
+                        $return = "<img src='" . Storage::url('test-image/350x250.png') . "' width='50' />";
+                    }
+                } else {
+                    $return = "<img src='" . Storage::url('test-image/350x250.png') . "' width='50' />";
+                }
+                return $return;
+            })
             ->editColumn('created_at', function ($request) {
                 return UtilityFacades::date_time_format($request->created_at);
             })
@@ -39,7 +52,7 @@ class BlogCategoryDataTable extends DataTable
                              </label>';
                 return $status;
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'icon']);
     }
 
     /**
@@ -174,6 +187,7 @@ class BlogCategoryDataTable extends DataTable
     {
         return [
             Column::make('No')->title(__('No'))->data('DT_RowIndex')->name('DT_RowIndex')->searchable(false)->orderable(false),
+            Column::make('icon')->title(__('Icon')),
             Column::make('name')->title(__('Name')),
             Column::make('status')->title(__('Status')),
             Column::make('created_at')->title(__('Created At')),

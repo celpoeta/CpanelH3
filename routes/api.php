@@ -16,6 +16,7 @@ Route::group(['middleware' => ['apikey']], function(){
 
     Route::post('addUser', [APIController::class, 'addUser']);
     Route::post('updateUser', [APIController::class, 'updateUser']);
+    Route::get('map', [APIController::class, 'Map']);
 
     Route::post('profileUser', [APIController::class, 'profileUser']);
 

@@ -41,7 +41,7 @@ class SocialLoginController extends Controller
                     'email' => $user->email,
                     'password' => Hash::make('123456dummy'),
                     'type' => UtilityFacades::getsettings('roles'),
-                    'lang' => 'en',
+                    'lang' => 'es',
                     'created_by' => '1',
                     'plan_id' => '1',
                     'avatar' => $avatar,

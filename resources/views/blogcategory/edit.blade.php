@@ -33,6 +33,10 @@
                                 {!! Form::text('name', null, ['placeholder' => __('Enter name'), 'class' => 'form-control', 'required']) !!}
                             </div>
                             <div class="form-group">
+                                {{ Form::label('icon', __('Icon'), ['class' => 'form-label']) }} *
+                                {!! Form::file('icon', ['class' => 'form-control', 'required' => 'required']) !!}
+                            </div>
+                            <div class="form-group">
                                 {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}
                                 {!! Form::select('status', ['1' => 'Active', '0' => 'Deactive'], $category->status, [
                                     'class' => 'form-select',
