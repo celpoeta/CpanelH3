@@ -13,7 +13,7 @@ class Zoo extends Model
     use HasSlug;
 
     public $fillable = [
-        'scientific_name', 'common_name', 'description','risk', 'risk_description','distribution', 'habitat', 'url_video', 'url_image','category_id', 'slug', 'short_description', 'slug', 'status' ,'created_at','created_by'
+        'scientific_name', 'common_name', 'description','risk', 'risk_description','distribution', 'habitat', 'url_video', 'url_image','category_id', 'slug', 'status' ,'created_at','created_by'
     ];
 
     public function getSlugOptions(): SlugOptions
