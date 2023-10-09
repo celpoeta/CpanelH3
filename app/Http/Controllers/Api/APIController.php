@@ -99,14 +99,14 @@ class APIController extends Controller
     }
 
     public function Map() {
-        $coordenadas  = Zoo::where('status', 1)->get(['id', 'icon', 'common_name', 'latitud', 'longitud']);
+        $coordenadas  = Zoo::where('status', 1)->get(['id', 'url_image', 'common_name', 'latitud', 'longitud','status']);
 
         $coordenadasArray = [];
 
         foreach ($coordenadas as $coordenada) {
             $coordenadasArray[] = [
                 'id' => $coordenada->id,
-                'icon' => Storage::url($coordenada->icon),
+                'image' => Storage::url($coordenada->url_image),
                 'name' => $coordenada->common_name,
                 'location' => $coordenada->latitud.', '.$coordenada->longitud
             ];
