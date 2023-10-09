@@ -18,31 +18,7 @@
                           </p>
                       </div>
                   </div>
-                  @if (!empty($footer_main_menus))
-                      @foreach ($footer_main_menus as $footer_main_menu)
-                          <div class="footer-col">
-                              <div class="footer-widget">
-                                  <h3>{{ $footer_main_menu->menu }}</h3>
-                                  @php
-                                      $sub_menus = App\Models\FooterSetting::where('parent_id', $footer_main_menu->id)->get();
-                                  @endphp
-                                  <ul>
-                                      @foreach ($sub_menus as $sub_menu)
-                                          @php
-                                              $page = App\Models\PageSetting::find($sub_menu->page_id);
-                                          @endphp
-                                          <li>
-                                              <a @if ($page->type == 'link') ?  href="{{ $page->page_url }}"  @else  href="{{ route('description.page', $sub_menu->slug) }}" @endif
-                                                  tabindex="0">{{ $page->title }}
-                                              </a>
-                                          </li>
-                                      @endforeach
-                                  </ul>
-                              </div>
-                          </div>
-                      @endforeach
 
-                  @endif
               </div>
               <div class="footer-bottom">
                   <div class="row align-items-center">

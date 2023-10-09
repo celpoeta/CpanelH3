@@ -60,62 +60,15 @@
                                 {!! NoCaptcha::display() !!}
                             </div>
                         @endif
-                        <div class="d-grid">
-                            {!! Form::button(__('Sign In'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block mt-3']) !!}
+                        <div class="d-grid" >
+                            {!! Form::button(__('Sign In'), ['type' => 'submit', 'class' => 'btn btn-primary btn-block mt-3', 'style' => 'background-color:#008ECC' ]) !!}
                         </div>
                         {{ Form::close() }}
-                        <div class="register-option">
-                            @if (Utility::getsettings('register') == 1)
-                                <div class="create_user text-center ">
-                                    {{ __('Do not have an account?') }}
-                                    <a href="{{ route('register') }}">{{ __('Create One') }}</a>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="social-media-icon">
-                            @if (Utility::getsettings('GOOGLESETTING') == 'on' ||
-                                    Utility::getsettings('FACEBOOKSETTING') == 'on' ||
-                                    Utility::getsettings('GITHUBSETTING') == 'on')
-                                <div class="mt-1 mb-4 row">
-                                    @if (Utility::getsettings('GOOGLESETTING') == 'on' ||
-                                            Utility::getsettings('FACEBOOKSETTING') == 'on' ||
-                                            Utility::getsettings('GITHUBSETTING') == 'on')
-                                        <p class="my-3 text-center register-link">{{ __('or register with') }}</p>
-                                    @endif
-                                    <div class="register-btn-wrapper">
-                                    @if (Utility::getsettings('GOOGLESETTING') == 'on')
-                                        <div class="col-4">
-                                            <div class="d-grid"><a href="{{ url('/redirect/google') }}"
-                                                    class="btn btn-light">
-                                                    {!! form::image(asset('assets/images/auth/img-google.svg'), null, ['class' => 'img-fluid wid-25']) !!}
-                                                </a></div>
-                                        </div>
-                                    @endif
-                                    @if (Utility::getsettings('FACEBOOKSETTING') == 'on')
-                                        <div class="col-4">
-                                            <div class="d-grid"><a href="{{ url('/redirect/facebook') }}"
-                                                    class="btn btn-light">
-                                                    {!! form::image(asset('assets/images/auth/img-facebook.svg'), null, ['class' => 'img-fluid wid-25']) !!}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    @endif
-                                    @if (Utility::getsettings('GITHUBSETTING') == 'on')
-                                        <div class="col-4">
-                                            <div class="d-grid"><a href="{{ url('/redirect/github') }}"
-                                                    class="btn btn-light">
-                                                    {!! form::image(asset('assets/images/auth/github.svg'), null, ['class' => 'img-fluid wid-25']) !!}
-                                                </a>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                </div>
-                            @endif
-                        </div>
+
+
                     </div>
                 </div>
-                <div class="login-media-col">
+                <div class="login-media-col" style="background-color:#008ECC;">
                     <div class="login-media-inner">
                         <img src="{{ Utility::getsettings('login_image')
                             ? Storage::url(Utility::getsettings('login_image'))

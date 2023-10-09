@@ -105,18 +105,19 @@ class ZooController extends Controller
             $this->validate($request, [
                 'common_name' => 'required',
                 'description' => 'required',
-                'url_image' => 'required',
                 'category_id' => 'required',
                 'habitat' => 'required',
             ]);
             $blog = Blog::find($id);
+            $input = $request->all();
             if ($request->hasFile('url_image')) {
                 $request->validate([
                     'url_image' => 'required',
                 ]);
                 $path = $request->file('url_image')->store('zoos');
+
             }
-            $input = $request->all();
+
             $input['risk'] = ($request->risk == 'on') ? 1 : 0;
             $input['url_image'] = $path;
             $input['created_by'] = \Auth::user()->id;

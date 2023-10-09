@@ -134,7 +134,7 @@
                         </div>
                         <div class="form-group">
                             {{ Form::label('images', __('Images'), ['class' => 'form-label']) }} *
-                            {!! Form::file('url_image', ['class' => 'form-control', 'required' => 'required']) !!}
+                            {!! Form::file('url_image', ['class' => 'form-control']) !!}
                         </div>
                         <div class="form-group">
                             {{ Form::label('name', 'Habitat', ['class' => 'col-form-label']) }}

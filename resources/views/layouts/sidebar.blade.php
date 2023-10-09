@@ -154,25 +154,7 @@
                                 class="dash-mtext">{{ __('Account Setting') }}</span><span class="dash-arrow"><i
                                     data-feather="chevron-right"></i></span></a>
                         <ul class="dash-submenu">
-                            @can('manage-mailtemplate')
-                                <li class="dash-item {{ request()->is('mailtemplate*') ? 'active' : '' }}">
-                                    <a class="dash-link"
-                                        href="{{ route('mailtemplate.index') }}">{{ __('Email Templates') }}</a>
-                                </li>
-                            @endcan
-                            @can('manage-sms-template')
-                                <li class="dash-item {{ request()->is('sms-template*') ? 'active' : '' }}">
-                                    <a class="dash-link"
-                                        href="{{ route('sms-template.index') }}">{{ __('Sms Templates') }}</a>
-                                </li>
-                            @endcan
-                            @can('manage-language')
-                                <li
-                                    class="dash-item {{ request()->is('manage-language*') || request()->is('create-language*') ? 'active' : '' }}">
-                                    <a class="dash-link"
-                                        href="{{ route('manage.language', [$currantLang]) }}">{{ __('Manage Languages') }}</a>
-                                </li>
-                            @endcan
+
                             @can('manage-setting')
                                 <li class="dash-item {{ request()->is('settings*') ? 'active' : '' }}">
                                     <a class="dash-link" href="{{ route('settings') }}">{{ __('Settings') }}</a>

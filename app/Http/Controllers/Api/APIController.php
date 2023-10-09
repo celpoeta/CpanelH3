@@ -34,8 +34,18 @@ class APIController extends Controller
 {
 
     public function allCategories() {
-        $BlogCategory = BlogCategory::all()->where('status', 1);
-        return response()->json($BlogCategory);
+        $coordenadas = BlogCategory::where('status', 1)->get(['id', 'name', 'icon', 'status', 'created_at']);
+        $Categories = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $Categories[] = [
+                'id' => $coordenada->id,
+                'name' => $coordenada->name,
+                'icon' => Storage::url($coordenada->icon),
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
+            ];
+        }
+        return response()->json($Categories);
     }
 
 
@@ -51,7 +61,7 @@ class APIController extends Controller
                 'description' => $coordenada->description,
                 'category_id' => $coordenada->category_id,
                 'slug' => $coordenada->slug,
-                'created_at' => $coordenada->created_at
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
             ];
         }
 
@@ -118,7 +128,6 @@ class APIController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'phone' => 'required|unique:users,phone',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -133,7 +142,6 @@ class APIController extends Controller
         $input['lang'] = "es";
         $input['active_status'] = '1';
         $input['country_code'] = '';
-        $input['phone'] = $input['phone'];
         $input['created_by'] = 1;
         $input['email_verified_at'] = (UtilityFacades::getsettings('email_verification') == '1') ? null : Carbon::now()->toDateTimeString();
         $input['phone_verified_at'] = (UtilityFacades::getsettings('sms_verification') == '1') ? null : Carbon::now()->toDateTimeString();
@@ -153,7 +161,6 @@ class APIController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'required',
-            'phone' => 'required|unique:users,phone,' . $id,
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -168,7 +175,6 @@ class APIController extends Controller
             unset($input['password']);
         }
         $input['country_code'] = '';
-        $input['phone'] = $input['phone'];
         $input['type'] = 'User';
         $user = User::find($id);
         $user->update($input);
@@ -184,9 +190,23 @@ class APIController extends Controller
     public function profileUser($id)
     {
         $user = User::find($id);
-        return response()->json([
-            "Profile" => $user
-           ]);
+
+        $coordenadas = User::where('id', $id)->get(['id', 'name', 'email', 'avatar', 'country', 'phone','created_at']);
+        $profile = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $profile[] = [
+                'id' => $coordenada->id,
+                'name' => $coordenada->name,
+                'email' => $coordenada->email,
+                'avatar' => Storage::url($coordenada->avatar),
+                'country' => $coordenada->country,
+                'phone' => $coordenada->phone,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
+            ];
+        }
+        return response()->json($profile);
+
 
     }
 

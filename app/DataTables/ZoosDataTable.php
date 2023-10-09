@@ -38,7 +38,7 @@ class ZoosDataTable extends DataTable
             })
             ->editColumn("images", function (Zoo $blog) {
                 if ($blog->url_image) {
-                    $return = "<img src='" .($blog->url_image) . "' width='50' />";
+                    $return = "<img src='" .Storage::url($blog->url_image). "' width='50' />";
                 } else {
                     $return = "<img src='" . Storage::url('test-image/350x250.png') . "' width='50' />";
                 }

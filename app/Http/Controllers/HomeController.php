@@ -18,6 +18,8 @@ use App\Models\User;
 use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\BlogCategory;
+use App\Models\Zoo;
 
 class HomeController extends Controller
 {
@@ -45,7 +47,7 @@ class HomeController extends Controller
         if (UtilityFacades::getsettings('landing_page') == 1) {
             return view('welcome', compact('apps_multiple_image_settings', 'faqs', 'forms', 'testimonials', 'features', 'footer_main_menus', 'business_growths_view_settings', 'business_growths_settings', 'blogs', 'lang'));
         } else {
-            return redirect()->route('login'); 
+            return redirect()->route('login');
         }
     }
 
@@ -67,7 +69,13 @@ class HomeController extends Controller
                 $submitted_form = FormValue::count();
                 $poll = Poll::count();
                 $forms = Form::count();
+                $Blog = Blog::count();
+                $Categories = BlogCategory::count();
+                $Zoos = Zoo::count();
             } else {
+                $Blog = Blog::count();
+                $Categories = BlogCategory::count();
+                $Zoos = Zoo::count();
                 $user = User::count();
                 $form = Form::whereIn('id', function ($query) use ($role_id) {
                     $query->select('form_id')->from('user_forms')->where('role_id', $role_id);
@@ -93,7 +101,7 @@ class HomeController extends Controller
                 $poll = Poll::count();
             }
 
-            return  view('dashboard/home', compact('user', 'form', 'submitted_form', 'widgets', 'poll', 'forms'));
+            return  view('dashboard/home', compact('user', 'form', 'Blog', 'widgets', 'Zoos', 'Categories'));
         }
     }
 
