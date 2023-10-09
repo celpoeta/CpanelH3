@@ -69,8 +69,33 @@ class APIController extends Controller
     }
 
     public function allZoos() {
-        $Zoo = Zoo::all()->where('status', 1);;
-        return response()->json($Zoo);
+        $coordenadas  = Zoo::where('status', 1)->get(['id', 'scientific_name', 'common_name', 'description', 'risk',
+        'risk_description','distribution','habitat','url_image','url_video','latitud','longitud','category_id','slug',
+        'status','created_at']);
+
+        $coordenadasArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $coordenadasArray[] = [
+                'id' => $coordenada->id,
+                'scientific_name' => $coordenada->scientific_name,
+                'common_name' => $coordenada->common_name,
+                'description' => $coordenada->description,
+                'risk' => $coordenada->risk,
+                'risk_description' => $coordenada->risk_description,
+                'distribution' => $coordenada->distribution,
+                'habitat' => $coordenada->habitat,
+                'url_image' => Storage::url($coordenada->url_image),
+                'url_video' => $coordenada->url_video,
+                'location' => $coordenada->latitud.', '.$coordenada->longitud,
+                'category_id' => $coordenada->category_id,
+                'slug' => $coordenada->slug,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y'),
+            ];
+        }
+
+        return response()->json($coordenadasArray);
+
     }
 
     public function Map() {
@@ -91,33 +116,84 @@ class APIController extends Controller
     }
 
     public function ShowZoo($id) {
-        $zoo = Zoo::find($id);
-        if ($zoo) {
-            return response()->json($zoo);
-        } else {
-            return response()->json(['response' => 'Zoo no encontrado'], 404);
+        $coordenadas  = Zoo::where('id', $id)->get(['id', 'scientific_name', 'common_name', 'description', 'risk',
+        'risk_description','distribution','habitat','url_image','url_video','latitud','longitud','category_id','slug',
+        'status','created_at']);
+
+        $coordenadasArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $coordenadasArray[] = [
+                'id' => $coordenada->id,
+                'scientific_name' => $coordenada->scientific_name,
+                'common_name' => $coordenada->common_name,
+                'description' => $coordenada->description,
+                'risk' => $coordenada->risk,
+                'risk_description' => $coordenada->risk_description,
+                'distribution' => $coordenada->distribution,
+                'habitat' => $coordenada->habitat,
+                'url_image' => Storage::url($coordenada->url_image),
+                'url_video' => $coordenada->url_video,
+                'location' => $coordenada->latitud.', '.$coordenada->longitud,
+                'category_id' => $coordenada->category_id,
+                'slug' => $coordenada->slug,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y'),
+            ];
         }
+
+        return response()->json($coordenadasArray);
 
     }
 
 
     public function filterNews($id) {
-        $Blog = Blog::where('category_id', $id)->get();
-        if ($Blog->isEmpty()) {
-            return response()->json(['message' => 'No se encontraron resultados para esta categoría'], 404);
-        } else {
-            return response()->json($Blog);
+        $coordenadas = Blog::where('category_id', $id)->get(['id', 'title', 'images', 'short_description', 'description','category_id','slug','created_at']);
+        $BlogArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $BlogArray[] = [
+                'id' => $coordenada->id,
+                'title' => $coordenada->title,
+                'images' => Storage::url($coordenada->images),
+                'description' => $coordenada->description,
+                'category_id' => $coordenada->category_id,
+                'slug' => $coordenada->slug,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y')
+            ];
         }
+
+        return response()->json($BlogArray);
+
     }
 
 
     public function filterZoo($id) {
-        $Zoo = Zoo::where('category_id', $id)->get();
-        if ($Zoo->isEmpty()) {
-            return response()->json(['message' => 'No se encontraron resultados para esta categoría'], 404);
-        } else {
-            return response()->json($Zoo);
+        $coordenadas  = Zoo::where('category_id', $id)->get(['id', 'scientific_name', 'common_name', 'description', 'risk',
+        'risk_description','distribution','habitat','url_image','url_video','latitud','longitud','category_id','slug',
+        'status','created_at']);
+
+        $coordenadasArray = [];
+
+        foreach ($coordenadas as $coordenada) {
+            $coordenadasArray[] = [
+                'id' => $coordenada->id,
+                'scientific_name' => $coordenada->scientific_name,
+                'common_name' => $coordenada->common_name,
+                'description' => $coordenada->description,
+                'risk' => $coordenada->risk,
+                'risk_description' => $coordenada->risk_description,
+                'distribution' => $coordenada->distribution,
+                'habitat' => $coordenada->habitat,
+                'url_image' => Storage::url($coordenada->url_image),
+                'url_video' => $coordenada->url_video,
+                'location' => $coordenada->latitud.', '.$coordenada->longitud,
+                'category_id' => $coordenada->category_id,
+                'slug' => $coordenada->slug,
+                'created_at' => Carbon::parse($coordenada->created_at)->format('m/d/Y'),
+            ];
         }
+
+        return response()->json($coordenadasArray);
     }
 
 
