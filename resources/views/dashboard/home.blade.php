@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-12 d-flex">
             <div class="mb-4 row">
-                <div class="mb-3 col-xxl-7">
+                <div class="mb-3 col-xxl-8">
                     <div class="row h-100">
                         @if (\Auth::user()->can('manage-user'))
                             <div class="col-lg-3 col-6 card-event">
@@ -68,8 +68,8 @@
                                                     <i class="text-white ti ti-file-text bg-success"></i>
                                                 </div>
                                                 <div class="col-12">
-                                                    <h6 class="m-b-20 text-muted">{{ __('Total Form') }}</h6>
-                                                    <h3 class="text-success">{{ isset($forms) ? $forms : 0 }}</h3>
+                                                    <h6 class="m-b-20 text-muted">{{ __('Total Categories') }}</h6>
+                                                    <h3 class="text-success">{{ isset($Categories) ? $Categories : 0 }}</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,9 +87,9 @@
                                                     <i class="text-white ti ti-ad-2 bg-danger"></i>
                                                 </div>
                                                 <div class="col-12">
-                                                    <h6 class="m-b-20 text-muted">{{ __('Total Submited Form') }}</h6>
+                                                    <h6 class="m-b-20 text-muted">{{ __('Total Blog') }}</h6>
                                                     <h3 class="text-danger">
-                                                        {{ isset($submitted_form) ? $submitted_form : 0 }}
+                                                        {{ isset($Blog) ? $Blog : 0 }}
                                                     </h3>
                                                 </div>
 
@@ -109,8 +109,8 @@
                                                     <i class="text-white ti ti-ad-2 bg-info"></i>
                                                 </div>
                                                 <div class="col-12">
-                                                    <h6 class="m-b-20 text-muted">{{ __('Total Poll') }}</h6>
-                                                    <h3 class="text-info">{{ isset($poll) ? $poll : 0 }}</h3>
+                                                    <h6 class="m-b-20 text-muted">{{ __('Total Zoos') }}</h6>
+                                                    <h3 class="text-info">{{ isset($Zoos) ? $Zoos : 0 }}</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,37 +120,10 @@
                         @endif
                     </div>
                 </div>
-                <div class="mb-3 col-xxl-5">
+
+                <div class="mb-3 col-xxl-4">
                     <div class="row">
-                        @if (\Auth::user()->can('dashboard-qrcode-form'))
-                            <div class="col-lg-4 col-sm-6 col-12 dash-card-responsive">
-                                <div class="m-0 card comp-card h-100">
-                                    <div class="card-body qr-card-body">
-                                        <div class="row">
-                                            <div class="text-center col-12">
-                                                <h6 class="mt-1 text-muted">{{ __('Forms') }}</h6>
-                                                <div class="mt-3 text-center">
-                                                    @php
-                                                        $hashids = new Hashids('', 20);
-                                                        $id = $hashids->encodeHex(Auth::user()->id);
-                                                    @endphp
-                                                    {!! QrCode::size(100)->generate(route('users.all.formsSurvey', $id)) !!}
-                                                </div>
-                                            </div>
-                                            <div class="text-center">
-                                                <a class="copy_form dash-btn btn btn-default btn-light-primary"
-                                                    onclick="copyToClipboard('#copy-form-{{ $id }}')"
-                                                    href="javascript:void(0)" id="copy-form-{{ $id }}"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    data-bs-original-title="{{ __('Click to copy link') }}"
-                                                    data-url="{{ route('users.all.formsSurvey', $id) }}"><i
-                                                        class="ti ti-copy"></i>{{ __('Copy Link') }}</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+
                         <div class="col-lg-8 col-sm-6 col-12 dash-card-responsive">
                             <div class="m-0 card comp-card">
                                 <div class="card-body admin-wish-card">
@@ -180,18 +153,6 @@
                                                 </a>
                                             @endcanany
                                             <div class="dropdown-menu">
-                                                @if (\Auth::user()->can('create-form'))
-                                                    <a href="{{ route('forms.create') }}" data-size="lg" data-url=""
-                                                        data-ajax-popup="true" data-title="Add Product"
-                                                        class="dropdown-item"
-                                                        data-bs-placement="top "><span>{{ __('Add New Form') }}</span></a>
-                                                @endif
-                                                @if (\Auth::user()->can('create-poll'))
-                                                    <a href="{{ route('poll.create') }}" data-size="md"
-                                                        data-ajax-popup="true" data-title="Create Tax"
-                                                        class="dropdown-item"
-                                                        data-bs-placement="top "><span>{{ __('Add New Poll') }}</span></a>
-                                                @endif
                                                 @if (\Auth::user()->can('create-event'))
                                                     <a href="javascript:void(0);" data-size="md"
                                                         data-url="{{ route('event.create') }}" id="EventCalender"

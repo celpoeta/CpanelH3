@@ -32,7 +32,7 @@ class SocialLoginController extends Controller
             $existuser->social_type = $type;
             $existuser->save();
             Auth::login($existuser);
-            return redirect()->intended('http://localhost:8100/welcome?id='.$finduser->user_id);
+            return redirect()->intended('https://h3.ceysshn.com/welcome?id='.$finduser->user_id);
         } else {
             $checkuser =  User::where('email', $user->email)->first();
             if (!$checkuser) {
@@ -71,7 +71,7 @@ class SocialLoginController extends Controller
                 $checkuser->save();
                 Auth::login($checkuser);
             }
-            return redirect()->intended('http://localhost:8100/welcome?id='.$user->id);
+            return redirect()->intended('https://h3.ceysshn.com/welcome?id='.$user->id);
         }
     }
 }

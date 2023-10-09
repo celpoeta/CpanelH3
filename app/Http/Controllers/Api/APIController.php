@@ -128,7 +128,6 @@ class APIController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'phone' => 'required|unique:users,phone',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -143,7 +142,6 @@ class APIController extends Controller
         $input['lang'] = "es";
         $input['active_status'] = '1';
         $input['country_code'] = '';
-        $input['phone'] = $input['phone'];
         $input['created_by'] = 1;
         $input['email_verified_at'] = (UtilityFacades::getsettings('email_verification') == '1') ? null : Carbon::now()->toDateTimeString();
         $input['phone_verified_at'] = (UtilityFacades::getsettings('sms_verification') == '1') ? null : Carbon::now()->toDateTimeString();
@@ -163,7 +161,6 @@ class APIController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'required',
-            'phone' => 'required|unique:users,phone,' . $id,
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -178,7 +175,6 @@ class APIController extends Controller
             unset($input['password']);
         }
         $input['country_code'] = '';
-        $input['phone'] = $input['phone'];
         $input['type'] = 'User';
         $user = User::find($id);
         $user->update($input);
